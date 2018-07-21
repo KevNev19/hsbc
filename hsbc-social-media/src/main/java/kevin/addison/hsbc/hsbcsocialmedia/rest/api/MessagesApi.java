@@ -6,7 +6,8 @@
 package kevin.addison.hsbc.hsbcsocialmedia.rest.api;
 
 import io.swagger.annotations.*;
-import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageResponse;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageList;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.WallPostRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,19 +20,25 @@ import javax.validation.Valid;
 @Api(value = "message", description = "the messages API")
 public interface MessagesApi {
 
-    @ApiOperation(value = "Get a user by ID", nickname = "messagesUsernameGet", notes = "This allows to user to fetch all messages posted", response = MessageResponse.class, tags = {"wall",})
+    @ApiOperation(
+            value = "Get a user by ID",
+            nickname = "messagesUsernameGet",
+            notes = "This allows to user to fetch all messages posted",
+            response = MessageList.class,
+            tags = {"wall",}
+    )
     @ApiResponses(value = {
             @ApiResponse(
                     code = 200,
                     message = "OK",
-                    response = MessageResponse.class
+                    response = MessageList.class
             )
     })
     @RequestMapping(
             value = "/messages/{username}",
             method = RequestMethod.GET
     )
-    ResponseEntity<MessageResponse> messagesUsernameGet(
+    ResponseEntity<MessageList> messagesUsernameGet(
             @ApiParam(
                     value = "The user name for the messages you want to fetch",
                     required = true)

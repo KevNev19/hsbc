@@ -15,16 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class UsersApiController implements UsersApi {
 
-    private static final Logger log = LoggerFactory.getLogger(UsersApiController.class);
-
-    private final ObjectMapper objectMapper;
-
-    @org.springframework.beans.factory.annotation.Autowired
-    public UsersApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-    }
-
-    public ResponseEntity<Void> usersUsernameFollowFollowUserNamePut(
+    public ResponseEntity<Void> addFollowerToUser(
             @ApiParam(
                     value = "The user name that si to be updated",
                     required = true

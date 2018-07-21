@@ -16,7 +16,7 @@ public interface UsersApi {
 
     @ApiOperation(
             value = "Follow another user",
-            nickname = "usersUsernameFollowFollowUserNamePut",
+            nickname = "addFollowerToUser",
             notes = "This will update the users deatils and add a user name for who they are following",
             tags = {"timeline",}
     )
@@ -28,7 +28,7 @@ public interface UsersApi {
     )
     @RequestMapping(value = "/users/{username}/follow/{followUserName}",
             method = RequestMethod.PUT)
-    ResponseEntity<Void> usersUsernameFollowFollowUserNamePut(
+    ResponseEntity<Void> addFollowerToUser(
             @ApiParam(
                     value = "The user name that si to be updated",
                     required = true
