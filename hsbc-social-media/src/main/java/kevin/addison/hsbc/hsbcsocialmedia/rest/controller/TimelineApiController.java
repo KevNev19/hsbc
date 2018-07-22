@@ -3,6 +3,7 @@ package kevin.addison.hsbc.hsbcsocialmedia.rest.controller;
 import io.swagger.annotations.ApiParam;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.api.TimelineApi;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageList;
+import kevin.addison.hsbc.hsbcsocialmedia.service.TimelineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class TimelineApiController implements TimelineApi {
 
     @Autowired
+    private TimelineService service;
+
+    @Autowired
     public TimelineApiController() {
     }
 
@@ -21,8 +25,8 @@ public class TimelineApiController implements TimelineApi {
                     value = "The user name that si to be updated",
                     required = true
             )
-            @PathVariable("id") String id) {
-        return new ResponseEntity<MessageList>(HttpStatus.NOT_IMPLEMENTED);
+            @PathVariable("id") Integer id) {
+        return service.getTimeLine(id);
     }
 
 }

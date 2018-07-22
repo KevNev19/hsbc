@@ -36,7 +36,7 @@ public interface UsersApi {
                     value = "The user name that si to be updated",
                     required = true
             )
-            @PathVariable("id") String id,
+            @PathVariable("id") Integer id,
             @Valid @RequestBody UserSub body);
 
     @ApiOperation(

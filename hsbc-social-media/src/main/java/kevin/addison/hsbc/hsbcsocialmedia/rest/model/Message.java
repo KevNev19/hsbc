@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 public class Message {
 
     @JsonProperty("_id")
+    @ApiModelProperty(hidden = true)
     private Integer id;
 
     @JsonProperty("message")

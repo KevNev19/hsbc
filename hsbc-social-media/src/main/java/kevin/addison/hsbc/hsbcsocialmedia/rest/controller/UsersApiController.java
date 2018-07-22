@@ -28,7 +28,7 @@ public class UsersApiController implements UsersApi {
                     value = "The user id that is to be updated",
                     required = true
             )
-            @PathVariable("id") String id,
+            @PathVariable("id") Integer id,
             @Valid @RequestBody UserSub body) {
         return userService.followUser(id, body);
     }

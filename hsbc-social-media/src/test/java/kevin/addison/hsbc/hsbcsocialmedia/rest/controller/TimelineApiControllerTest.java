@@ -18,15 +18,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UsersApiControllerTest {
+public class TimelineApiControllerTest {
 
     @LocalServerPort
     private int port;
 
     private String contextPath = "social/v1";
-    private String headUrl = "/users/1";
-    private String patchUrl = "/users/1/follow/2";
+    private String getUrl = "/timeline/1";
     private String postUrl = "/message";
+    private String followUser = "/users/1/follow";
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -35,23 +35,13 @@ public class UsersApiControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        HttpEntity<Message> request = new HttpEntity<>(testData.getMessageBodyForPost());
-        this.restTemplate
-                .postForObject("http://localhost:" + port + "/" + contextPath + postUrl, request, String.class);
+        testData.setupTimeLineForTest(restTemplate, contextPath, postUrl, port, followUser);
+
     }
 
     @Test
-    public void userCanFolllowAnotherUser() {
-        HttpEntity<UserSub> request = new HttpEntity<>(testData.getUserBodyForPut());
-        assertThat(this.restTemplate.exchange("http://localhost:" + port + "/" + contextPath + patchUrl, HttpMethod.PUT,
-                request, String.class));
-    }
-
-    @Test
-    public void usersExistsWithHeadCheck() {
-        HttpEntity<Message> request = new HttpEntity<>(testData.getMessageBodyForPost());
-        assertThat(
-                this.restTemplate.exchange("http://localhost:" + port + "/" + contextPath + headUrl, HttpMethod.HEAD,
-                        request, String.class));
+    public void getTimelineForUserId() {
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/" + contextPath + getUrl,
+                String.class)).contains("addca");
     }
 }

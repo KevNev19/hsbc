@@ -40,10 +40,10 @@ public class UserService {
 
     }
 
-    public ResponseEntity<Void> followUser(String id, UserSub body) {
+    public ResponseEntity<Void> followUser(Integer id, UserSub body) {
         boolean updated = false;
         for (Integer userId : userData.keySet()) {
-            if (userId.equals(id)) {
+            if (userId == id) {
                 User user = userData.get(id);
                 user.getFollowing().add(body.getId());
                 userData.put(userId, user);

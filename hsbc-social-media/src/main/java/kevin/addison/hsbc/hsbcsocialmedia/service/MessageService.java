@@ -4,14 +4,15 @@ import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageList;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.User;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.UserSub;
+import kevin.addison.hsbc.hsbcsocialmedia.validation.Predicate;
+import kevin.addison.hsbc.hsbcsocialmedia.validation.UtilityTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 import static org.springframework.http.ResponseEntity.created;
 
@@ -23,6 +24,7 @@ public class MessageService {
     @Autowired
     private UserService userService = new UserService();
     private Integer key = 1;
+    private Predicate predicate;
 
     public ResponseEntity<Void> postMessage(Message body) {
 
@@ -45,15 +47,13 @@ public class MessageService {
 
     public ResponseEntity<MessageList> getMessagesForUser(Integer id) {
 
-        MessageList msgs = new MessageList();
-
-        for (Message message : dataStorageMsg.values()) {
-            if (message.getUser().getId() == id) {
-                msgs.add(new Message(message.getId(), message.getMessage(), message.getUser()));
+        Predicate predicate = new Predicate() {
+            public boolean matches(Message message, Integer id) {
+                return message.getUser().getId() == id;
             }
-        }
+        };
 
-        return new ResponseEntity<>(msgs, HttpStatus.OK);
+        return UtilityTools.getInstance().findMessages(id, predicate, dataStorageMsg);
     }
 
     public LinkedHashMap<Integer, Message> getDataStorageMsg() {
