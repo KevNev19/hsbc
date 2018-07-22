@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +48,7 @@ public class MessagesApiController implements MessagesApi {
                     value = "Message request to the API for posting a message against a user",
                     required = true
             )
-            @Valid @RequestBody Message body) {
+            @Validated @RequestBody Message body) {
         return messageService.postMessage(body);
     }
 

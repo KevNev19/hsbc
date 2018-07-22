@@ -22,27 +22,38 @@ public class MessageService {
 
     @Autowired
     private UserService userService = new UserService();
+    private Integer key = 1;
 
     public ResponseEntity<Void> postMessage(Message body) {
 
-//        checkUserExists(body.getUser());
+        checkUserExists(body.getUser());
+
+        body.setId(key);
+        dataStorageMsg.put(key, body);
+
+        key++;
+
         return created(URI.create("/" + body.getId())).build();
     }
 
     private void checkUserExists(UserSub user) {
         HashMap<Integer, User> userData = userService.getUserData();
-        if(!userData.containsValue(user.getUsername())) {
+        if (!userData.containsValue(user.getUsername())) {
             userService.createUser(user);
         }
     }
 
     public ResponseEntity<MessageList> getMessagesForUser(Integer id) {
 
-        MessageList messages = new MessageList();
+        MessageList msgs = new MessageList();
 
-        messages.add(new Message(1, "this is a message", new UserSub(1, "addke")));
+        for (Message message : dataStorageMsg.values()) {
+            if (message.getUser().getId() == id) {
+                msgs.add(new Message(message.getId(), message.getMessage(), message.getUser()));
+            }
+        }
 
-        return new ResponseEntity<>(messages, HttpStatus.OK);
+        return new ResponseEntity<>(msgs, HttpStatus.OK);
     }
 
     public LinkedHashMap<Integer, Message> getDataStorageMsg() {

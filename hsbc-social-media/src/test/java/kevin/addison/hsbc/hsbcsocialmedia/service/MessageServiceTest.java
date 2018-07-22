@@ -3,22 +3,28 @@ package kevin.addison.hsbc.hsbcsocialmedia.service;
 import kevin.addison.hsbc.hsbcsocialmedia.TestDataStub;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.controller.MessagesApiController;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.net.URI;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import java.util.Set;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.unprocessableEntity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -37,6 +43,14 @@ public class MessageServiceTest {
 
     private TestDataStub testData = TestDataStub.getInstance();
 
+    private static Validator validator;
+
+    @Before
+    public void setUp() throws Exception {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
+
     @Test
     public void postMessageShouldReturnCreatedStatus() throws Exception {
         when(service.postMessage(testData.getMessageBodyForPost())).thenReturn(ok().build());
@@ -50,13 +64,21 @@ public class MessageServiceTest {
 
     @Test
     public void postMessageShouldReturnValidationError() throws Exception {
-        when(service.postMessage(testData.getMessageInvalidBodyForPost())).thenReturn(badRequest().build());
+        when(service.postMessage(testData.getMessageInvalidBodyForPost())).thenReturn(unprocessableEntity().build());
         this.mockMvc.perform(
                 post("/message")
                         .accept("application/json")
                         .contentType("application/json")
                         .content(testData.getInvalidJson())
-        ).andDo(print()).andExpect(status().isBadRequest());
+        ).andDo(print()).andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void testThatThereIsAValidationError() throws Exception {
+        Message message = new Message();
+        message.setMessage("1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+        Set<ConstraintViolation<Message>> violations = validator.validate(message);
+        assertFalse(violations.isEmpty());
     }
 
     @Test
@@ -65,6 +87,6 @@ public class MessageServiceTest {
 
         this.mockMvc.perform(get("/messages/1")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("this is a test")))
-        .andExpect(content().string(containsString("addke")));
+                .andExpect(content().string(containsString("addke")));
     }
 }

@@ -56,4 +56,8 @@ public class TestDataStub {
     public Message getMessageInvalidBodyForPost() {
         return invalidMsg;
     }
+
+    public UserSub getUserBodyForPut() {
+        return userSub;
+    }
 }

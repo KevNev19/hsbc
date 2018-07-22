@@ -31,8 +31,6 @@ public interface UsersApi {
                             code = 200, message = "OK")
             }
     )
-    @RequestMapping(value = "/users/{id}/follow",
-            method = RequestMethod.PATCH)
     ResponseEntity<Void> addFollowerToUser(
             @ApiParam(
                     value = "The user name that si to be updated",
