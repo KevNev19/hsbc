@@ -30,6 +30,6 @@ public interface TimelineApi {
         @ApiResponse(code = 200, message = "OK", response = FollowsMessageResponse.class) })
     @RequestMapping(value = "/timeline/{id}",
         method = RequestMethod.GET)
-    ResponseEntity<FollowsMessageResponse> timelineIdGet(@ApiParam(value = "The user name that si to be updated",required=true) @PathVariable("id") String id);
+    ResponseEntity<FollowsMessageResponse> timelineIdGet(@ApiParam(value = "The user id for the time line you wish to retrieve",required=true) @PathVariable("id") Integer id);
 
 }

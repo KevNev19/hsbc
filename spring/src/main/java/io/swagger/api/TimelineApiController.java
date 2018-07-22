@@ -36,7 +36,7 @@ public class TimelineApiController implements TimelineApi {
         this.request = request;
     }
 
-    public ResponseEntity<FollowsMessageResponse> timelineIdGet(@ApiParam(value = "The user name that si to be updated",required=true) @PathVariable("id") String id) {
+    public ResponseEntity<FollowsMessageResponse> timelineIdGet(@ApiParam(value = "The user id for the time line you wish to retrieve",required=true) @PathVariable("id") Integer id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {

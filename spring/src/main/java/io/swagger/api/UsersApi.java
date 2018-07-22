@@ -29,6 +29,15 @@ public interface UsersApi {
         @ApiResponse(code = 200, message = "OK") })
     @RequestMapping(value = "/users/{id}/follow/{followerId}",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> usersIdFollowFollowerIdPut(@ApiParam(value = "The user id that is to be updated",required=true) @PathVariable("id") String id,@ApiParam(value = "The user id you wish to follow",required=true) @PathVariable("followerId") String followerId);
+    ResponseEntity<Void> usersIdFollowFollowerIdPut(@ApiParam(value = "The user id that is to be updated",required=true) @PathVariable("id") Integer id,@ApiParam(value = "The user id you wish to follow",required=true) @PathVariable("followerId") Integer followerId);
+
+
+    @ApiOperation(value = "check user exists", nickname = "usersIdHead", notes = "This is a simple head validation to check the user exists", tags={ "users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "User Exists"),
+        @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/users/{id}",
+        method = RequestMethod.HEAD)
+    ResponseEntity<Void> usersIdHead(@ApiParam(value = "The user id you want to check",required=true) @PathVariable("id") Integer id);
 
 }
