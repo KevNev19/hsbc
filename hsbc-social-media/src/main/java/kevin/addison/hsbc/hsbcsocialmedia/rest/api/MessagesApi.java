@@ -8,7 +8,6 @@ package kevin.addison.hsbc.hsbcsocialmedia.rest.api;
 import io.swagger.annotations.*;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageList;
-import kevin.addison.hsbc.hsbcsocialmedia.rest.model.WallPostRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(value = "message", description = "the messages API")
 public interface MessagesApi {
 
     @ApiOperation(
-            value = "Get a user by ID",
+            value = "Get messages for a user",
             nickname = "messagesUsernameGet",
             notes = "This allows to user to fetch all messages posted",
             response = MessageList.class,
@@ -32,17 +32,21 @@ public interface MessagesApi {
                     code = 200,
                     message = "OK",
                     response = MessageList.class
+            ),
+            @ApiResponse(
+                    code = 422,
+                    message = "Validation Message"
             )
     })
     @RequestMapping(
-            value = "/messages/{username}",
+            value = "/messages/{id}",
             method = RequestMethod.GET
     )
     ResponseEntity<MessageList> messagesUsernameGet(
             @ApiParam(
                     value = "The user name for the messages you want to fetch",
                     required = true)
-            @PathVariable("username") String username);
+            @PathVariable("id") Integer id);
 
     @ApiOperation(
             value = "Post a message to your wall",
@@ -71,6 +75,6 @@ public interface MessagesApi {
             @ApiParam(
                     value = "Message request to the API for posting a message against a user",
                     required = true
-            ) @Valid @RequestBody WallPostRequest body);
+            ) @Valid @RequestBody Message body);
 
 }

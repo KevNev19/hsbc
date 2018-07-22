@@ -1,28 +1,33 @@
 package kevin.addison.hsbc.hsbcsocialmedia.rest.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiParam;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.api.UsersApi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.UserSub;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 public class UsersApiController implements UsersApi {
 
     public ResponseEntity<Void> addFollowerToUser(
             @ApiParam(
-                    value = "The user name that si to be updated",
+                    value = "The user id that is to be updated",
                     required = true
             )
-            @PathVariable("username") String username,
-            @ApiParam(value = "The user you wish to follow", required = true)
-            @PathVariable("followUserName") String followUserName) {
+            @PathVariable("id") String id,
+            @Valid @RequestBody UserSub body) {
+        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @Override
+    public ResponseEntity<Void> usersIdHead(
+            @ApiParam(value = "The user id you want to check", required = true)
+            @PathVariable("id") Integer id) {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Validated
 @Data
-public class User {
+public class UserSub {
 
     @JsonProperty("_id")
     private Integer id;
@@ -21,8 +21,12 @@ public class User {
     @JsonProperty("username")
     private String username;
 
-    @JsonProperty("following")
-    private List<Integer> following;
+    public UserSub() {
+    }
 
+    public UserSub(int id, String username) {
+        this.id = id;
+        this.username = username;
+    }
 }
 

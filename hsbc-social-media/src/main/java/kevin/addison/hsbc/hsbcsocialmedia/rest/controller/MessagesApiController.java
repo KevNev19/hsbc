@@ -4,12 +4,10 @@ import io.swagger.annotations.ApiParam;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.api.MessagesApi;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageList;
-import kevin.addison.hsbc.hsbcsocialmedia.rest.model.WallPostRequest;
 import kevin.addison.hsbc.hsbcsocialmedia.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +30,7 @@ public class MessagesApiController implements MessagesApi {
     }
 
     @RequestMapping(
-            value = "/messages/{username}",
+            value = "/messages/{id}",
             method = RequestMethod.GET
     )
     public ResponseEntity<MessageList> messagesUsernameGet(
@@ -40,8 +38,8 @@ public class MessagesApiController implements MessagesApi {
                     value = "The user name for the messages you want to fetch",
                     required = true
             )
-            @PathVariable("username") String username) {
-        return messageService.getMessagesForUser(username);
+            @PathVariable("id") Integer id) {
+        return messageService.getMessagesForUser(id);
     }
 
     public ResponseEntity<Void> postMessage(
@@ -49,7 +47,7 @@ public class MessagesApiController implements MessagesApi {
                     value = "Message request to the API for posting a message against a user",
                     required = true
             )
-            @Valid @RequestBody WallPostRequest body) {
+            @Valid @RequestBody Message body) {
         return messageService.postMessage(body);
     }
 

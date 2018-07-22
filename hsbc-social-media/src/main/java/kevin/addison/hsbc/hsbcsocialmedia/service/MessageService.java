@@ -1,55 +1,51 @@
 package kevin.addison.hsbc.hsbcsocialmedia.service;
 
-import kevin.addison.hsbc.hsbcsocialmedia.collections.MessageCollection;
-import kevin.addison.hsbc.hsbcsocialmedia.collections.UserCollection;
-import kevin.addison.hsbc.hsbcsocialmedia.repository.MessageRepository;
-import kevin.addison.hsbc.hsbcsocialmedia.repository.UserRepository;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
 import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageList;
-import kevin.addison.hsbc.hsbcsocialmedia.rest.model.WallPostRequest;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.User;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.UserSub;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.created;
 
 @Service
 public class MessageService {
 
-    private MessageRepository msgRepo;
-    private UserRepository userRepo;
+    private LinkedHashMap<Integer, Message> dataStorageMsg = new LinkedHashMap<>();
 
-    public ResponseEntity<Void> postMessage(WallPostRequest body) {
+    @Autowired
+    private UserService userService = new UserService();
 
-        MessageCollection newMsg = new MessageCollection();
-        newMsg.setMessage(body.getMessage());
-        newMsg.setUsername(body.getUser().getUsername());
+    public ResponseEntity<Void> postMessage(Message body) {
 
-        msgRepo.save(newMsg);
-
-        UserCollection newUser = new UserCollection();
-        newUser.setFistName(body.getUser().getFirstName());
-        newUser.setLastName(body.getUser().getLastName());
-        newUser.setUsername(body.getUser().getFirstName());
-
-        userRepo.save(newUser);
-
-        return ok().build();
+//        checkUserExists(body.getUser());
+        return created(URI.create("/" + body.getId())).build();
     }
 
-    public ResponseEntity<MessageList> getMessagesForUser(String username) {
-
-        List<MessageCollection> userMessages = msgRepo.findAllByUsernameOrderByCreatedOn(username);
-
-        MessageList msgs = new MessageList();
-        for (MessageCollection userMessage : userMessages) {
-            Message msg = new Message();
-            msg.setMessage(userMessage.getMessage());
-            msgs.add(msg);
+    private void checkUserExists(UserSub user) {
+        HashMap<Integer, User> userData = userService.getUserData();
+        if(!userData.containsValue(user.getUsername())) {
+            userService.createUser(user);
         }
+    }
 
-        return new ResponseEntity<>(msgs, HttpStatus.OK);
+    public ResponseEntity<MessageList> getMessagesForUser(Integer id) {
+
+        MessageList messages = new MessageList();
+
+        messages.add(new Message(1, "this is a message", new UserSub(1, "addke")));
+
+        return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+
+    public LinkedHashMap<Integer, Message> getDataStorageMsg() {
+        return dataStorageMsg;
     }
 }

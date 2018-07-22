@@ -6,10 +6,15 @@
 package kevin.addison.hsbc.hsbcsocialmedia.rest.api;
 
 import io.swagger.annotations.*;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.UserSub;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.validation.Valid;
 
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
@@ -18,7 +23,7 @@ public interface UsersApi {
             value = "Follow another user",
             nickname = "addFollowerToUser",
             notes = "This will update the users deatils and add a user name for who they are following",
-            tags = {"timeline",}
+            tags = {"users",}
     )
     @ApiResponses(
             value = {
@@ -26,15 +31,38 @@ public interface UsersApi {
                             code = 200, message = "OK")
             }
     )
-    @RequestMapping(value = "/users/{username}/follow/{followUserName}",
-            method = RequestMethod.PUT)
+    @RequestMapping(value = "/users/{id}/follow",
+            method = RequestMethod.PATCH)
     ResponseEntity<Void> addFollowerToUser(
             @ApiParam(
                     value = "The user name that si to be updated",
                     required = true
             )
-            @PathVariable("username") String username,
-            @ApiParam(value = "The user you wish to follow", required = true)
-            @PathVariable("followUserName") String followUserName);
+            @PathVariable("id") String id,
+            @Valid @RequestBody UserSub body);
+
+    @ApiOperation(
+            value = "check user exists",
+            nickname = "usersIdHead",
+            notes = "This is a simple head validation to check the user exists",
+            tags = {"users",}
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            code = 200,
+                            message = "User Exists"
+                    ),
+                    @ApiResponse(
+                            code = 404,
+                            message = "Not Found")
+            }
+    )
+    @RequestMapping(
+            value = "/users/{id}",
+            method = RequestMethod.HEAD)
+    ResponseEntity<Void> usersIdHead(
+            @ApiParam(value = "The user id you want to check", required = true)
+            @PathVariable("id") Integer id);
 
 }

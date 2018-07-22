@@ -6,20 +6,23 @@
 package kevin.addison.hsbc.hsbcsocialmedia.rest.api;
 
 import io.swagger.annotations.*;
-import kevin.addison.hsbc.hsbcsocialmedia.rest.model.FollowsMessageResponse;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.Message;
+import kevin.addison.hsbc.hsbcsocialmedia.rest.model.MessageList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 @Api(value = "timeline", description = "the timeline API")
 public interface TimelineApi {
 
     @ApiOperation(
             value = "Get timeline info of all followers",
-            nickname = "timelineUsernameGet",
+            nickname = "getTimelineForUserId",
             notes = "This allows a user to see all their followers messages",
-            response = FollowsMessageResponse.class,
+            response = MessageList.class,
             tags = {"timeline",}
     )
     @ApiResponses(
@@ -27,18 +30,22 @@ public interface TimelineApi {
                     @ApiResponse(
                             code = 200,
                             message = "OK",
-                            response = FollowsMessageResponse.class
+                            response = MessageList.class
+                    ),
+                    @ApiResponse(
+                            code = 404,
+                            message = "Not Found"
                     )
             }
     )
-    @RequestMapping(value = "/timeline/{username}",
+    @RequestMapping(value = "/timeline/{id}",
             method = RequestMethod.GET)
-    ResponseEntity<FollowsMessageResponse> timelineUsernameGet(
+    ResponseEntity<MessageList> getTimelineForUserId(
             @ApiParam(
                     value = "The user name that si to be updated",
                     required = true
             )
-            @PathVariable("username") String username
+            @PathVariable("id") String id
     );
 
 }
