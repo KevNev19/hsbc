@@ -5,7 +5,7 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.MessageResponse;
+import io.swagger.model.MessageList;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,11 +25,11 @@ import java.util.List;
 @Api(value = "messages", description = "the messages API")
 public interface MessagesApi {
 
-    @ApiOperation(value = "Get a user by ID", nickname = "messagesUsernameGet", notes = "This allows to user to fetch all messages posted", response = MessageResponse.class, tags={ "wall", })
+    @ApiOperation(value = "Get a users messages by username", nickname = "messagesIdGet", notes = "This allows to user to fetch all messages posted", response = MessageList.class, tags={ "wall", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = MessageResponse.class) })
-    @RequestMapping(value = "/messages/{username}",
+        @ApiResponse(code = 200, message = "OK", response = MessageList.class) })
+    @RequestMapping(value = "/messages/{id}",
         method = RequestMethod.GET)
-    ResponseEntity<MessageResponse> messagesUsernameGet(@ApiParam(value = "The user name for the messages you want to fetch",required=true) @PathVariable("username") String username);
+    ResponseEntity<MessageList> messagesIdGet(@ApiParam(value = "The user id for the messages you want to fetch",required=true) @PathVariable("id") Integer id);
 
 }

@@ -25,11 +25,11 @@ import java.util.List;
 @Api(value = "timeline", description = "the timeline API")
 public interface TimelineApi {
 
-    @ApiOperation(value = "Get timeline info of all followers", nickname = "timelineUsernameGet", notes = "This allows a user to see all their followers messages", response = FollowsMessageResponse.class, tags={ "timeline", })
+    @ApiOperation(value = "Get timeline info of all followers", nickname = "timelineIdGet", notes = "This allows a user to see all their followers messages", response = FollowsMessageResponse.class, tags={ "timeline", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = FollowsMessageResponse.class) })
-    @RequestMapping(value = "/timeline/{username}",
+    @RequestMapping(value = "/timeline/{id}",
         method = RequestMethod.GET)
-    ResponseEntity<FollowsMessageResponse> timelineUsernameGet(@ApiParam(value = "The user name that si to be updated",required=true) @PathVariable("username") String username);
+    ResponseEntity<FollowsMessageResponse> timelineIdGet(@ApiParam(value = "The user name that si to be updated",required=true) @PathVariable("id") String id);
 
 }

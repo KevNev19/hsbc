@@ -24,11 +24,11 @@ import java.util.List;
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
 
-    @ApiOperation(value = "Follow another user", nickname = "usersUsernameFollowFollowUserNamePut", notes = "This will update the users deatils and add a user name for who they are following", tags={ "timeline", })
+    @ApiOperation(value = "Follow another user", nickname = "usersIdFollowFollowerIdPut", notes = "This will update the users deatils and add a user name for who they are following", tags={ "timeline", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK") })
-    @RequestMapping(value = "/users/{username}/follow/{followUserName}",
+    @RequestMapping(value = "/users/{id}/follow/{followerId}",
         method = RequestMethod.PUT)
-    ResponseEntity<Void> usersUsernameFollowFollowUserNamePut(@ApiParam(value = "The user name that si to be updated",required=true) @PathVariable("username") String username,@ApiParam(value = "The user you wish to follow",required=true) @PathVariable("followUserName") String followUserName);
+    ResponseEntity<Void> usersIdFollowFollowerIdPut(@ApiParam(value = "The user id that is to be updated",required=true) @PathVariable("id") String id,@ApiParam(value = "The user id you wish to follow",required=true) @PathVariable("followerId") String followerId);
 
 }

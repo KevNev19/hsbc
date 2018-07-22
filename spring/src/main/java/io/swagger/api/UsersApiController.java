@@ -35,7 +35,7 @@ public class UsersApiController implements UsersApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> usersUsernameFollowFollowUserNamePut(@ApiParam(value = "The user name that si to be updated",required=true) @PathVariable("username") String username,@ApiParam(value = "The user you wish to follow",required=true) @PathVariable("followUserName") String followUserName) {
+    public ResponseEntity<Void> usersIdFollowFollowerIdPut(@ApiParam(value = "The user id that is to be updated",required=true) @PathVariable("id") String id,@ApiParam(value = "The user id you wish to follow",required=true) @PathVariable("followerId") String followerId) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }

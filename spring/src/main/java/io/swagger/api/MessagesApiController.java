@@ -1,6 +1,6 @@
 package io.swagger.api;
 
-import io.swagger.model.MessageResponse;
+import io.swagger.model.MessageList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -36,18 +36,18 @@ public class MessagesApiController implements MessagesApi {
         this.request = request;
     }
 
-    public ResponseEntity<MessageResponse> messagesUsernameGet(@ApiParam(value = "The user name for the messages you want to fetch",required=true) @PathVariable("username") String username) {
+    public ResponseEntity<MessageList> messagesIdGet(@ApiParam(value = "The user id for the messages you want to fetch",required=true) @PathVariable("id") Integer id) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<MessageResponse>(objectMapper.readValue("{  \"message\" : \"This is the message I posted\",  \"createdOn\" : \"20/07/2018\"}", MessageResponse.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<MessageList>(objectMapper.readValue("\"\"", MessageList.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<MessageResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<MessageList>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<MessageResponse>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<MessageList>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }
